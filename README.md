@@ -6,7 +6,7 @@ The tentative schedule is as follows:
 
 | Week | Day | Date  | Subject(s)                                              |
 |------|:---:|-------|---------------------------------------------------------|
-| 1 | T | 08/22 | Intro to technology |
+| 1 | T | 08/22 | [Intro to technology](https://sta6235-fa23.github.io/class-materials/lectures/L01-intro-to-tech.html) |
 |   | R | 08/24 | Summarizing and graphing data    |
 |   |   |       | Assignment: A01, due 08/28 |
 | 2 | T | 08/29 | Multiple regression basics |
