@@ -104,7 +104,7 @@ library(palmerpenguins)
     
     - [RStudio from Posit](https://posit.co/products/open-source/rstudio/)
     
-- Alternative to installing: [RStudio Server](https://rstudio.hmcse.uwf.edu/) hosted by HMCSE](https://uwf.edu/hmcse/)
+- Alternative to installing: [RStudio Server](https://rstudio.hmcse.uwf.edu/) hosted by [UWF HMCSE](https://uwf.edu/hmcse/)
 
 - **Do not use Citrix.**
 
@@ -260,11 +260,27 @@ library(palmerpenguins)
     
 ## GitHub {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"} 
 
-SSH key on computer
+<center><img src = "images/L01ar.png" width = 1100></center>
 
 ## GitHub {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"} 
 
-SSH key to GitHub
+<center><img src = "images/L01as.png" width = 1100></center>
+
+## GitHub {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"} 
+
+<center><img src = "images/L01ba.png" width = 1100></center>
+
+## GitHub {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"} 
+
+<center><img src = "images/L01bb.png" width = 1100></center>
+
+## GitHub {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"} 
+
+<center><img src = "images/L01bc.png" width = 1100></center>
+
+## GitHub {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"} 
+
+<center><img src = "images/L01bd.png" width = 1100></center>
     
 ## RStudio and GitHub {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"} 
 
