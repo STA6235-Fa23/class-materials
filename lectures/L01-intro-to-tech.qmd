@@ -333,3 +333,5 @@ Show updated space in R
 - Answer questions in the Quarto file in this week's GitHub repo.
 
 - Push file back to GitHub.
+
+Update
