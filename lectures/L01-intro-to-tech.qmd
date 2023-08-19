@@ -300,29 +300,31 @@ SSH key to GitHub
 
 ## RStudio and GitHub {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"} 
 
-Commit
+<center><img src = "images/L01al.png" width = 1100></center>
 
 ## RStudio and GitHub {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"} 
 
-Push
+<center><img src = "images/L01am.png" width = 900></center>
 
 ## RStudio and GitHub {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"} 
 
-Show GitHub webpage with pushed stuff
+<center><img src = "images/L01an.png" width = 900></center>
 
 ## RStudio and GitHub {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"} 
 
-Show GitHub page with new stuff
+<center><img src = "images/L01ao.png" width = 900></center>
 
 ## RStudio and GitHub {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"} 
 
-Pull
+<center><img src = "images/L01ap.png" width = 900></center>
 
 ## RStudio and GitHub {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"} 
 
-Show updated space in R
+<center><img src = "images/L01aq.png" width = 1100></center>
 
+## RStudio and GitHub {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"} 
 
+<center><img src = "images/L01am.png" width = 1100></center>
 
 ## Today's Activity {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"} 
 
@@ -333,5 +335,3 @@ Show updated space in R
 - Answer questions in the Quarto file in this week's GitHub repo.
 
 - Push file back to GitHub.
-
-Update
