@@ -6,10 +6,10 @@ The tentative schedule is as follows:
 
 | Week | Day | Date  | Subject(s)                                              |
 |------|:---:|-------|---------------------------------------------------------|
-| 1 | T | 08/22 | [Intro to technology](https://sta6235-fa23.github.io/class-materials/lectures/L01-intro-to-tech.html) |
-|   | R | 08/24 | Summarizing and graphing data    |
+| 1 | T | 08/22 | [Intro to RStudio and Quarto](https://sta6235-fa23.github.io/class-materials/lectures/L01-intro-to-RStudio-and-Quarto.html) |
+|   | R | 08/24 | [Intro to GitHub](https://sta6235-fa23.github.io/class-materials/lectures/L02-intro-to-GitHub.html)    |
 |   |   |       | Assignment: A01, due 08/28 |
-| 2 | T | 08/29 | Multiple regression basics |
+| 2 | T | 08/29 | [Intro to R Programming](https://sta6235-fa23.github.io/class-materials/lectures/L03-intro-to-R-programming.html) |
 |   | R | 08/31 | Multiple regression basics |
 |   |   |       | Assignment: A02, due 09/04 |
 | 3 | T | 09/05 | Categorical predictors |
