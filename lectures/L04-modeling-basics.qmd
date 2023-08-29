@@ -1,5 +1,5 @@
 ---
-title: "Introduction to R Programming"
+title: "Review of Modeling Basics"
 subtitle: "STA6235: Modeling in Regression"
 execute:
   echo: true
