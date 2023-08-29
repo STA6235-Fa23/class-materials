@@ -10,7 +10,7 @@ The tentative schedule is as follows:
 |   | R | 08/24 | [Intro to GitHub](https://sta6235-fa23.github.io/class-materials/lectures/L02-intro-to-GitHub.html)    |
 |   |   |       | Assignment: A01, due 08/28 |
 | 2 | T | 08/29 | [Intro to R Programming](https://sta6235-fa23.github.io/class-materials/lectures/L03-intro-to-R-programming.html) |
-|   | R | 08/31 | Multiple regression basics |
+|   | R | 08/31 | [Multiple regression basics](https://sta6235-fa23.github.io/class-materials/lectures/L04-modeling-basics.html) |
 |   |   |       | Assignment: A02, due 09/04 |
 | 3 | T | 09/05 | Categorical predictors |
 |   | R | 09/07 | Categorical predictors |
