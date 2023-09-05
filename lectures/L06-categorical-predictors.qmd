@@ -1,0 +1,475 @@
+---
+title: "Categorical Predictors"
+subtitle: "STA6235: Modeling in Regression"
+execute:
+  echo: true
+  warning: false
+  message: false
+format: 
+  revealjs:
+    theme: uwf2
+    embed-resources: true
+    slide-number: false
+    width: 1600
+    height: 900
+    df-print: paged
+    html-math-method: katex
+title-slide-attributes:
+    data-background-image: /Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/title.png
+    data-background-size: contain 
+editor: source
+pdf-separate-fragments: true
+fig-align: center
+---
+
+## Introduction {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"} 
+
+- Recall the general linear model, $$ y = \beta_0 + \beta_1 x_1 + ... + \beta_k x_k + \varepsilon $$
+
+- Until now, we have discussed *continuous* predictors.
+
+- Now we will introduce the use of *categorical*, or qualitative, predictors. 
+
+- This means that we will include predictors that *categorize* the observations.
+
+    - We can assign numbers to the categories, however, the numbers are *nominal*.
+    
+## Categorical Variables {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"} 
+
+- If there are $c$ classes in a categorical predictor, we include $c-1$ in the model. 
+
+    - e.g., underclassman status: freshman, sophomore, junior, senior
+    
+    - e.g., AKC-recognized pug color: fawn, black
+
+- We will create *indicator* variables to include in our model.
+
+- The $c-1$ predictors included in the model will be binary indicators for category. 
+$$ x_i = \begin{cases} 
+      1 & \textnormal{if category $i$} \\
+      0 & \textnormal{if another category}
+\end{cases}$$
+
+- In the underclassman status example, we could create four indicator variables, but we would only include three in our model.
+
+- While we will call them indicator variables, you will more often see them called dummy variables.
+
+
+## Egg Production Data {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"} 
+
+- Consider the [egg production dataset](https://github.com/rfordatascience/tidytuesday/blob/master/data/2023/2023-04-11/readme.md)
+
+```{r}
+library(tidyverse)
+egg_prod  <- read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2023/2023-04-11/egg-production.csv')
+```
+```{r}
+#| echo: false
+head(egg_prod, n=3)
+```
+
+## Egg Production Data {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"} 
+
+- Let's explore the categorical variables.
+
+::: {.panel-tabset}
+
+## Looking at Production Type
+
+```{r}
+egg_prod %>% count(prod_type)
+```
+
+## Looking at Production Process
+
+```{r}
+egg_prod %>% count(prod_process)
+```
+
+:::
+
+## Creating Indicator Variables {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"} 
+
+- We could use `mutate()` and `if_else()` to define indicator variables.
+
+- However, we will use the `dummy_cols()` function from the `fastDummies` package.
+
+```{r}
+#| eval: false
+library(fastDummies)
+dataset <- dataset %>%
+  dummy_cols(select_columns = c("var1", "var2", ..., "varQ"))
+```
+
+- Note that this will also create a column that indicates if the value is missing or not.
+
+    - This variable **must not** be included in the model.
+
+## Egg Production Data {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"} 
+
+- Let's create indicator variables for both production type and production process.
+
+```{r}
+library(fastDummies)
+egg_prod <- egg_prod %>%
+  dummy_cols(select_columns = c("prod_type", "prod_process"))
+```
+
+```{r}
+#| echo: false
+head(egg_prod, n=3)
+```
+
+## Modeling with Categorical Predictors {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"} 
+
+- We represent a categorical variable with $c$ classes with $c-1$ indicator variables in a model.
+
+- The last indicator variable not included is called the *reference group*. 
+
+- How do we choose a reference group?
+
+    - It depends on the story being told / what is of interest.
+  
+    - It does not affect the usefulness of the model, only the interpretations.
+
+## Modeling with Categorical Predictors {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"} 
+
+- Let's model the egg production data. 
+
+- Suppose we are interested in modeling the number of eggs as a function of the number of hens, the production type, and the production process.
+
+- First, let's see what happens when we do not use indicator variables.
+
+```{r}
+m1 <- lm(n_eggs ~ n_hens + prod_type + prod_process, data = egg_prod)
+summary(m1)
+```
+
+## Modeling with Categorical Predictors {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"} 
+
+- We can see that R automatically treated them as categorical predictors, selecting a reference group for us.
+
+```{r}
+coefficients(m1)
+```
+
+- R uses the "first group" as the reference group.
+
+    - Production Type $\to$ "hatching eggs"
+    
+    - Production Process $\to$ "all"
+
+- It is fine to do this for "ease" - if I am just checking on significance, I do not necessarily use indicator variables.
+
+## Modeling with Categorical Predictors {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"} 
+
+- What if they were stored as numeric instead? 
+
+    - See .qmd file for how I created numeric versions.
+
+```{r}
+#| echo: false
+egg_prod <- egg_prod %>%
+  mutate(type_num = case_when(prod_type == "hatching eggs" ~ 1,
+                              prod_type == "table eggs" ~ 2),
+         proc_num = case_when(prod_process == "all" ~ 1,
+                              prod_process == "cage-free (non-organic)" ~ 2,
+                              prod_process == "cage-free (organic)" ~ 3))
+```
+
+```{r}
+m2 <- lm(n_eggs ~ n_hens + type_num + proc_num, data = egg_prod)
+summary(m2)
+```
+
+## Modeling with Categorical Predictors {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"} 
+
+- A way around this without creating indicator variables is using `as.factor()`.
+
+```{r}
+m3 <- lm(n_eggs ~ n_hens + as.factor(type_num) + as.factor(proc_num), data = egg_prod)
+summary(m3)
+```
+
+## Modeling with Categorical Predictors {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"} 
+
+- Circling back to indicator variables, let's construct our model using those. 
+
+- First, we need to see what their names are. 
+
+<center><img src = "images/L06a.png" width = 800></center>
+
+- Note the spaces!
+
+    - This is the downside of using packages written by others...
+
+## Modeling with Categorical Predictors {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"} 
+
+- Using those variables in the model,
+
+```{r}
+m4 <- lm(n_eggs ~ n_hens + `prod_type_hatching eggs` + `prod_process_cage-free (non-organic)` + `prod_process_cage-free (organic)`, data = egg_prod)
+summary(m4)
+```
+
+## Modeling with Categorical Predictors {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"} 
+
+- Note that when using indicator variables, it allows us to easily change the reference group. 
+
+    - This is not as straight forward when using other methods of including categorical data.
+
+- Let's change the reference groups for both categorical predictors 
+
+```{r}
+m5 <- lm(n_eggs ~ n_hens + `prod_type_table eggs` + `prod_process_cage-free (non-organic)` + `prod_process_all`, data = egg_prod)
+summary(m5)
+```
+
+## Modeling with Categorical Predictors {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"} 
+
+- Putting these models side-by-side,
+
+```{r}
+(c4 <- coefficients(m4)) # ref: table eggs, process all 
+(c5 <- coefficients(m5)) # ref: hatching eggs, process organic
+```
+
+
+## Modeling with Categorical Predictors {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"} 
+
+- When we have a binary (*c* $=$ 2) predictor and switch the reference group:
+
+```{r}
+c4["`prod_type_hatching eggs`"] # ref: table eggs
+c5["`prod_type_table eggs`"] # ref: hatching eggs
+```
+
+- The direction (sign) changes, but the magnitude does not.
+
+## Modeling with Categorical Predictors {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"} 
+
+- When we have a categorical (*c* $\ge$ 3) predictor and switch the reference group:
+
+```{r}
+c(c4["`prod_process_cage-free (non-organic)`"], c4["`prod_process_cage-free (organic)`"]) # ref: all
+c(c5["`prod_process_cage-free (non-organic)`"], c5["prod_process_all"]) # ref: organic
+```
+
+- Organic vs. all (from m4) is the same relationship as all vs. organic (from m5).
+
+    - Like before, the direction (sign) changed, but the magnitude did not.
+    
+- The coefficients for the non-organic process are *different*
+
+    - In m4, we are comparing against all.
+    - In m5, we are comparing against organic.
+    
+## Testing Categorical Predictors {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"} 
+
+- We are interested in knowing if the overall categorical variable is a significant predictor of the outcome.
+
+    - If *c* = 2, we can use the results from `summary()`.
+    
+    - If *c* $\ge$ 3, we must use a partial $F$.
+
+- We will define the full model as the model with all predictors.
+
+- We will define the reduced model as the model without predictors relevant to the categorical variable. 
+
+- Then, we will use `anova()` as follows:
+
+```{r}
+#| eval: false
+
+full <- lm() or glm()
+reduced <- lm() or glm()
+anova(reduced, full, test = "F")
+```
+
+## Testing Categorical Predictors {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"} 
+
+<u>In theory</u>:
+
+- **Hypotheses**
+
+    - $H_0: \beta_{1}^* = \beta_{2}^* = ... = \beta_{s}^* = 0$ in the model $y = \beta_0 + \beta_1 x_1 + ... + \beta_q x_q + \beta_{1}^*x_1^* = \beta_{2}^*x_2^* = ... = \beta_{s}^*x_s^* + \varepsilon$
+    
+    - $H_1:$ at least one $\beta_i^* \ne 0$ in the model $y = \beta_0 + \beta_1 x_1 + ... + \beta_q x_q + \beta_{1}^*x_1^* = \beta_{2}^*x_2^* = ... = \beta_{s}^*x_s^* + \varepsilon$
+    
+- **Test Statistic and *p*-Value**
+
+    - $F_0 = \frac{\left[ \text{SSReg(full)} - \text{SSReg(reduced)} \right]/s}{\text{MSE(full)}}$ 
+    
+    - $p = P(F_{s, n-q-s} \ge F_0)$
+    
+- **Rejection Region**
+
+    - Reject $H_0$ if $p < \alpha$
+    
+## Testing Categorical Predictors {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"} 
+
+Annotations from another lifetime:
+
+<center><img src = "images/L06b.png"></center>
+
+## Testing Categorical Predictors {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"} 
+
+<u>In practice</u>:
+
+- **Hypotheses**
+
+    - $H_0: \beta_{1} = \beta_{2} = ... = \beta_{c-1} = 0$ in the specified model
+    
+    - $H_1:$ at least one $\beta_i \ne 0$ in the specified model
+    
+- **Test Statistic and *p*-Value**
+
+    - $F_0$ and $p$ from `anova()`
+    
+- **Rejection Region**
+
+    - Reject $H_0$ if $p < \alpha$
+
+## Testing Categorical Predictors {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"} 
+
+- Let's look at this in our chicken example,
+```{r}
+full <- lm(n_eggs ~ n_hens + `prod_type_hatching eggs` + `prod_process_cage-free (non-organic)` + `prod_process_cage-free (organic)`, data = egg_prod)
+reduced <- lm(n_eggs ~ n_hens + `prod_type_hatching eggs`, data = egg_prod)
+anova(reduced, full, test = "F")
+```
+
+## Testing Categorical Predictors {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"} 
+
+- **Hypotheses**
+
+    - $H_0: \beta_{\text{non-organic}} = \beta_{\text{organic}} = 0$ in the specified model
+    
+    - $H_1:$ at least one $\beta_i \ne 0$ in the specified model
+    
+- **Test Statistic and *p*-Value**
+
+    - $F_0 = 1.127$
+    
+    - $p = 0.326$
+    
+- **Rejection Region**
+
+    - Reject $H_0$ if $p < \alpha$; $\alpha = 0.05$
+    
+- **Conclusion/Interpretation**
+
+    - Fail to reject $H_0.$
+    
+    - There is not sufficient evidence to suggest that the process type is a significant predictor of egg production.
+    
+## Testing Categorical Predictors {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"} 
+
+- As mentioned earlier, when we are testing a single binary indicator (i.e., *c* = 2), we can use the results from `summary()`.
+
+```{r}
+summary(m4)
+```
+
+## Testing Categorical Predictors {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"} 
+
+- **Hypotheses**
+
+    - $H_0: \beta_{\text{egg type}} = 0$
+    
+    - $H_1: \beta_{\text{egg type}} \ne 0$
+    
+- **Test Statistic and *p*-Value**
+
+    - $t_0 = -0.878$
+    
+    - $p = 0.381$
+    
+- **Rejection Region**
+
+    - Reject $H_0$ if $p < \alpha$; $\alpha = 0.05$
+    
+- **Conclusion/Interpretation**
+
+    - Fail to reject $H_0.$
+    
+    - There is not sufficient evidence to suggest that the egg type is a significant predictor of number of eggs.
+
+## Visualizing Models with Categorical Predictors {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"} 
+
+- Including categorical predictors in the model varies the *y*-intercept. 
+
+- We will plug in 0's and 1's to the terms representing the categorical predictor.
+
+- Let's define predicted values for the different production processes.
+
+    - We will let number of hens vary and hold egg type constant.
+
+```{r}
+(c4 <- coefficients(m4))
+egg_prod <- egg_prod %>%
+  mutate(y_hat_all = c4["(Intercept)"] + c4["n_hens"]*n_hens + c4["`prod_type_hatching eggs`"]*1 + c4["`prod_process_cage-free (non-organic)`"]*0 + c4["`prod_process_cage-free (organic)`"]*0,
+         y_hat_org = c4["(Intercept)"] + c4["n_hens"]*n_hens + c4["`prod_type_hatching eggs`"]*1 + c4["`prod_process_cage-free (non-organic)`"]*0 + c4["`prod_process_cage-free (organic)`"]*1,
+         y_hat_non_org = c4["(Intercept)"] + c4["n_hens"]*n_hens + c4["`prod_type_hatching eggs`"]*1 + c4["`prod_process_cage-free (non-organic)`"]*1 + c4["`prod_process_cage-free (organic)`"]*0)
+```
+
+## Visualizing Models with Categorical Predictors {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"} 
+
+::: {.panel-tabset}
+
+## code
+
+```{r}
+#| eval: false
+egg_prod %>% ggplot(aes(x = n_hens, y = n_eggs, color = prod_process)) +
+  geom_point() +
+  geom_line(aes(y = y_hat_all), color = "blue") +
+  geom_line(aes(y = y_hat_org), color = "hotpink") +
+  geom_line(aes(y = y_hat_non_org), color = "purple") +
+  xlim(0, 75000000) + ylim(0, 1750000000) + 
+  labs(x = "Number of Hens",
+       y = "Number of Eggs",
+       color = "Production Process") + 
+  theme_bw()
+```
+
+## graph
+
+<center>
+```{r}
+#| echo: false
+egg_prod %>% ggplot(aes(x = n_hens, y = n_eggs, color = prod_process)) +
+  geom_point() +
+  geom_line(aes(y = y_hat_all), color = "blue") +
+  geom_line(aes(y = y_hat_org), color = "hotpink") +
+  geom_line(aes(y = y_hat_non_org), color = "purple") +
+  xlim(0, 75000000) + ylim(0, 1750000000) + 
+  labs(x = "Number of Hens",
+       y = "Number of Eggs",
+       color = "Production Process") + 
+  theme_bw()
+```
+</center>
+
+:::
+
+## Wrap Up {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"} 
+
+- Today we have introduced the concept of categorical predictors.
+
+    - Always remember that if there are *c* categories, there will be *c*-1 predictor terms in the model.
+    
+    - When *c* = 2, we can use the test results from `summary()` to discuss significance.
+    
+    - When *c* $\ge$ 3, we *must* use a partial *F* test (i.e., full/reduced ANOVA)
+    
+    - When including for visualization, must plug in 0's and 1's - no means, medians, etc.! We plug in *only* plausible values.
+
+- Today's assignment:
+
+    - Introduce *species* as a categorical predictor of penguin body mass.
+    
+    - Determine significance of predictors.
+    
+    - Reassess model assumptions under the new model.
+
