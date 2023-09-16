@@ -15,10 +15,10 @@ The tentative schedule is as follows:
 | 3 | T | 09/05 | [Model assumptions and diagnostics](https://sta6235-fa23.github.io/class-materials/lectures/L05-assumptions-and-diagnostics.html) |
 |   | R | 09/07 | [Categorical predictors](https://sta6235-fa23.github.io/class-materials/lectures/L06-categorical-predictors.html) |
 |   |   |       | Assignment: A03, due 09/11 |
-| 4 | T | 09/12 | Interaction terms |
-|   | R | 09/14 | Interaction terms |
+| 4 | T | 09/12 | [Interaction terms - part 1](https://sta6235-fa23.github.io/class-materials/lectures/L07-interactions-pt1.html) |
+|   | R | 09/14 | [Interaction terms - part 2](https://sta6235-fa23.github.io/class-materials/lectures/L08-interactions-pt2.html) |
 |   |   |       | Assignment: A04, due 09/18 |
-| 5 | T | 09/19 | Gamma regression |
+| 5 | T | 09/19 | Theory of generalized linear models |
 |   | R | 09/21 | Gamma regression |
 |   |   |       | Assignment: A05, due 09/25 |
 | 6 | T | 09/26 | Project 1 |
