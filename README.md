@@ -52,7 +52,7 @@ The tentative schedule is as follows:
 |    | R | 11/30 | Take home applied exam |
 |    |   |       | Assignment: Applied Exam, due 12/01 |
 
-**Conceptual Final Exam:** On Canvas on Thursday, 12/07
+**Conceptual Final Exam:** *proctored* on Thursday, 12/07
 
 
 
