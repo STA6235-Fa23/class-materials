@@ -1,0 +1,395 @@
+---
+title: "Introduction to Generalized Linear Models"
+subtitle: "STA6235: Modeling in Regression"
+execute:
+  echo: true
+  warning: false
+  message: false
+  error: true
+format: 
+  revealjs:
+    theme: uwf2
+    embed-resources: true
+    slide-number: false
+    width: 1600
+    height: 900
+    df-print: paged
+    html-math-method: katex
+title-slide-attributes:
+    data-background-image: /Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/title.png
+    data-background-size: contain 
+editor: source
+pdf-separate-fragments: true
+fig-align: center
+---
+
+## Introduction {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"} 
+
+- Recall the general linear model (GLM),
+
+$$ y = \beta_0 + \beta_1 x_1 + ... + \beta_k x_k $$
+
+- This can be simplified using matrix expressions, 
+
+$$ \mathbf{Y} = \mathbf{X} \boldsymbol{\beta} + \boldsymbol{\varepsilon}, $$
+
+- where
+
+    - $\mathbf{Y}$ is the $n \times 1$ column vector of responses.
+    
+    - $\mathbf{X}$ is the $n \times p$ design matrix.
+    
+    - $\boldsymbol{\beta}$ is the $p \times 1$ column vector of regression coefficients.
+    
+    - $\boldsymbol{\varepsilon}$ is the $n \times 1$ column vector of error terms.
+    
+## Regression in Matrix Form {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"} 
+
+- Looking at the (literal) matrices,
+
+$$ 
+\begin{align*}
+\mathbf{Y} &= \mathbf{X} \boldsymbol{\beta} + \boldsymbol{\varepsilon} \\
+\begin{bmatrix} y_1 \\ \vdots \\ y_n \end{bmatrix} &= \begin{bmatrix} 1 & x_{1,1} & x_{1,2} & \cdots & x_{1,(p-1)}  \\ \vdots & \vdots & \vdots & & \vdots \\ 1 & x_{n,1} & x_{n,2} & \cdots & x_{n, (p-1)} \end{bmatrix} \begin{bmatrix} \beta_0 \\ \beta_1 \\ \vdots \\ \beta_{p-1} \end{bmatrix} + \begin{bmatrix} \varepsilon_1 \\ \vdots \\ \varepsilon_n \end{bmatrix}
+\end{align*}
+$$
+
+- where
+
+    - $\mathbf{y}$ is the $n \times 1$ column vector of responses.
+    
+    - $\mathbf{X}$ is the $n \times p$ design matrix.
+    
+    - $\boldsymbol{\beta}$ is the $p \times 1$ column vector of regression coefficients.
+    
+    - $\boldsymbol{\varepsilon}$ is the $n \times 1$ column vector of error terms.
+    
+## Vector of Error Terms {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"} 
+
+- Recall the error term, $\boldsymbol{\varepsilon} = \left[ \varepsilon_1, \ \varepsilon_2, \ \cdots, \ \varepsilon_n\right]^\text{T}$, a vector of independent normal random variables with
+    
+    - a $n \times 1$ expectation vector,  $\text{E}\left[\boldsymbol{\varepsilon}\right] = 0$ and 
+    
+    - a $n \times n$ variance-covariance matrix $\sigma^2 \mathbf{I},$
+
+$$
+\sigma^2 \mathbf{I} = \sigma^2 \begin{bmatrix} 1 & 0 & \cdots & 0 \\
+0 & 1 & \cdots & 0 \\
+\vdots & \vdots & \ddots & 0 \\
+0 & 0 & \cdots & 1
+\end{bmatrix} =  \begin{bmatrix} \sigma^2 & 0 & \cdots & 0 \\
+0 & \sigma^2 & \cdots & 0 \\
+\vdots & \vdots & \ddots & 0 \\
+0 & 0 & \cdots & \sigma^2
+\end{bmatrix}
+$$
+
+- Note that we do not have to assume independence ... 
+
+    - ... we just have to account for dependence if the data is not independent.
+    
+## Estimation of $\boldsymbol{\beta}$ and $\boldsymbol{\varepsilon}_i$ {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"}   
+
+- We estimate $\boldsymbol{\beta}$,
+
+$$
+\boldsymbol{\hat{\beta}} = (\mathbf{X}'\mathbf{X})^{-1} \mathbf{X}'\mathbf{Y}
+$$
+
+- ... and find the predicted (or fitted) value,
+
+$$
+\mathbf{\hat{Y}} = \mathbf{X} \boldsymbol{\hat{\beta}} = \mathbf{X}\left(\mathbf{X}'\mathbf{X}\right)^{-1} \mathbf{X}'\mathbf{Y}
+$$
+
+- ... and find the residual,
+
+$$
+\boldsymbol{\hat{\varepsilon}} \equiv \mathbf{e} = \mathbf{Y} - \mathbf{\hat{Y}} = \mathbf{Y} - \mathbf{X}\boldsymbol{\hat{\beta}} 
+$$
+
+## Design Matrix! {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"} 
+
+- Let's talk about the design matrix for a second.
+
+$$\mathbf{X} = \begin{bmatrix} 1 & x_{1,1} & x_{1,2} & \cdots & x_{1,(p-1)}  \\ \vdots & \vdots & \vdots & & \vdots \\ 1 & x_{n,1} & x_{n,2} & \cdots & x_{n, (p-1)} \end{bmatrix}$$
+
+- Why is there a column of 1's?
+
+- What is $p$?
+
+- Note that for estimation to happen, $\mathbf{X}$ must be full rank.
+
+    - A $r \times r$ matrix is said to be *full rank* if its rank is $r$.
+    
+    - This means that the matrix is *nonsingular* (it has an inverse).
+    
+    - Full rank also means that all columns are linearly independent.    
+    
+## Design Matrix! {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"} 
+
+Full rank also means that all columns are linearly independent.
+
+::: {style="font-size: 150%;"}
+
+Full rank also means that all columns are linearly independent.
+
+:::
+
+::: {style="font-size: 200%;"}
+
+Full rank also means that all columns are linearly independent.
+
+:::
+
+::: {style="font-size: 300%;"}
+
+Full rank also means that all columns are linearly independent.
+
+:::
+
+## Design Matrix! {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"} 
+
+- Full rank also means that all columns are linearly independent.
+
+- Why am I harping on this?
+
+## Design Matrix! {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"} 
+
+- Full rank also means that all columns are linearly independent.
+
+- Why am I harping on this?
+
+- **This is why we have reference groups for categorical predictors!!**
+
+    - If we were to include all $c$ classes, we would no longer have a full rank design matrix.
+    
+    - This is why when we do not use indicator variables, software "chooses" a reference group for us.
+    
+        - We literally cannot include all groups as predictors because we cannot perform the estimation.
+
+## Hat Matrix! {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"} 
+
+- Let's revisit the predicted value,
+
+$$
+\begin{align*}
+\mathbf{\hat{Y}} &= \mathbf{X} \boldsymbol{\hat{\beta}} \\
+&= \mathbf{X}\left(\mathbf{X}'\mathbf{X}\right)^{-1} \mathbf{X}'\mathbf{Y} \\
+&= \left( \mathbf{X}\left(\mathbf{X}'\mathbf{X}\right)^{-1} \mathbf{X}' \right) \mathbf{Y}
+\end{align*}
+$$
+
+- We call $\mathbf{X}\left(\mathbf{X}'\mathbf{X}\right)^{-1} \mathbf{X}'$ the *hat matrix*.
+  
+    - .......... because it gives $\mathbf{Y}$ its hat.
+
+- Note that the hat matrix is symmetric and idempotent (i.e., $\mathbf{H}\mathbf{H} = \mathbf{H}$).
+
+## Hat Matrix and Residuals {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"} 
+
+- We have an alternate way of expressing the residuals,
+
+$$
+\begin{align*}
+\mathbf{e} &= \mathbf{Y} - \mathbf{\hat{Y}} \\
+&= \mathbf{Y} - \mathbf{H}\mathbf{Y} \\
+&= \left(\mathbf{I} - \mathbf{H} \right) \mathbf{Y}
+\end{align*}
+$$
+
+- This is why you will see references to elements from the hat matrix ($h_{ii}$) for calculations related to residual analysis.
+
+## Wrap Up - Matrices {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"} 
+
+- Note that we can go through the matrix-based calculations for everything we've learned so far, but that is not the point of this course.
+
+- Goal: give you an appreciation/understanding of what's going on under the hood.
+
+- If you are interested, you can read more here:
+
+    - [link 1](https://www.bbk.ac.uk/ms/brooms/teaching/SA/Stat-Anal07.pdf)
+    
+    - [link 2](http://www.stat.columbia.edu/~fwood/Teaching/w4315/Fall2009/lecture_11)
+    
+    - [link 3](http://www.stat.columbia.edu/~fwood/Teaching/w4315/Fall2009/lecture_12)
+
+- Now, let's talk about leaving the normal distribution...
+
+## Introduction to Generalized Linear Models {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"} 
+
+- We will now extend to [generalized linear models](https://en.wikipedia.org/wiki/Generalized_linear_model) (GzLM).
+
+    - These models allow us to model non-normal responses.
+    
+- GzLMs have three components:
+
+    - Random component: $\mathbf{Y}$, the response.
+    
+    - Linear predictor: $\mathbf{X}\boldsymbol{\beta}$, where $\boldsymbol{\beta}$ is the parameter vector and $\mathbf{X}$ is the $n \times p$ design matrix that contains $p-1$ explanatory variables for the $n$ observations.
+    
+    - Link function: $g\left(\text{E}[\mathbf{Y}]\right) = \mathbf{X}\boldsymbol{\beta}$
+    
+## Random Component {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"} 
+
+- The random component consists of the response, $y$
+
+    - $y$ has *independent* observations
+    
+    - $y$'s probability density or mass function is in the exponential family
+    
+- A random variable, $y$, has a distribution in the [exponential family](https://en.wikipedia.org/wiki/Exponential_family) if it can be written in the following form:
+$$ f(y | \theta, \phi) = \exp \left\{ \frac{y\theta-b(\theta)}{a(\phi)} + c(y|\phi) \right\}, $$
+- for specified functions $a(\cdot)$, $b(\cdot)$, and $c(\cdot)$.
+
+    - $\theta$ is the parameter of interest (canonical or natural)
+    
+    - $\phi$ is usually a nuissance parameter (scale or dispersion)
+    
+## Random Component {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"} 
+
+- Let's show that the normal distribution is in the exponential family.
+
+- Assume $y \sim N(\mu, \sigma^2)$; we will treat $\sigma^2$ as a nuisance parameter.
+
+$$
+\begin{align*}
+f(y | \theta, \phi) &= \left(\frac{1}{2\pi \sigma^2} \right)^{1/2} \exp\left\{ \frac{-1}{2\sigma^2} (y-\mu)^2 \right\} \\
+&= \exp\left\{ \frac{-y^2}{2\sigma^2} + \frac{y\mu}{\sigma^2} - \frac{\mu^2}{2\sigma^2} - \frac{1}{2} \ln\left(2\pi\sigma^2\right) \right\} \\
+&= \exp\left\{\frac{y\mu-\mu^2/2}{\sigma^2} - \frac{y^2}{2\sigma^2} - \frac{1}{2} \ln\left(2\pi\sigma^2\right) \right\} \\
+&= \exp \left\{ \frac{y\theta-b(\theta)}{a(\phi)} + c(y|\phi) \right\}
+\end{align*}
+$$
+
+## Random Component {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"} 
+
+$$
+\begin{align*}
+f(y | \theta, \phi) &= \exp\left\{\frac{y\mu-\mu^2/2}{\sigma^2} - \frac{y^2}{2\sigma^2} - \frac{1}{2} \ln\left(2\pi\sigma^2\right) \right\} \\
+&= \exp \left\{ \frac{y\theta-b(\theta)}{a(\phi)} + c(y|\phi) \right\}
+\end{align*}
+$$
+
+- $\theta = \mu$
+
+- $\phi = \sigma^2$
+
+- $a(\phi) = \phi$
+
+- $b(\theta) = \mu^2/2 = \theta^2/2$
+
+- $c(y|\phi) = -(1/2 \ln(2\pi\sigma^2) + y^2/(2\sigma^2))$
+
+## Random Component {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"} 
+
+- Why are we restricted to the exponential family?
+
+    - There are general expressions for model likelihood equations.
+    
+    - There are asymptotic distributions of estimators for model parameters (i.e., $\hat{\beta}$).
+    
+        - This allows us to "know" things!
+    
+    - We have an algorithm for fitting models.
+    
+## Linear Predictors {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"} 
+
+- Let us first discuss notation.
+
+    - $x_{ij}$ is the $j$<sup>th</sup> explanatory variable for observation $i$
+    
+        - $i=1, ... , n$ 
+        
+        - $j=1, ..., p-1$
+    
+    - Each observation (or subject) has a vector, $x_i = \left[1, x_{i,1}, ..., x_{i, p-1}\right]$
+    
+        - The leading 1 is for the intercept, $\beta_0$.
+    
+        - These are put together into $\mathbf{X}$, the design matrix.
+        
+## Linear Predictors {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"} 
+        
+- The linear predictor relates parameters ($\eta_i$) pertaining to E[$y_i$] to the explanatory variables using a linear combination,
+$$ \eta_i = \sum_{j=1}^{p-1} \beta_j x_{ij} $$
+- In matrix form,
+$$ \boldsymbol{\eta} = \mathbf{X} \boldsymbol{\beta} $$
+
+- This is a linear predictor because it is linear in the *parameters*, $\boldsymbol{\beta}$.
+
+    - The *predictors* can be nonlinear.
+    
+        - e.g., time<sup>2</sup> (quadratic term), $x_1 x_2$ (interaction)
+        
+## Linear Predictors {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"} 
+
+- We call $\mathbf{X}$ the design matrix.
+
+    - There are $n$ rows (one for each observation).
+    
+    - There are $p$ columns ($p-1$ predictors -- the $p$<sup>th</sup> column is for the intercept).
+    
+- In most studies, we have $p < n$.
+    
+    - Goal: summarize data using a smaller number of parameters.
+    
+- Some studies have $p >>> n$, e.g., genetics.
+
+    - These studies need special methodology that is not covered in this course.
+    
+- GzLMs treat $y_i$ as random, $x_i$ as fixed.
+
+    - These are called fixed-effects models.
+    
+    - There are also random effects $\to$ fixed effects + random effects = mixed models.
+    
+        - Random effects are beyond the scope of this course.
+    
+## Link Function {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"} 
+
+- The link function, $g(\cdot)$, connects the random component with the linear predictor.
+
+    - $g(\cdot)$ is a monotonic and differentiable function.
+
+- Let $\mu_i = \text{E}[y_i]$:
+
+    - The GzLM links $\eta_i$ to $\mu_i$ by $\eta_i = g(\mu_i)$
+    
+- In the exponential family representation, a certain parameter serves as its natural parameter.
+
+    - Normal distribution: the mean 
+    - Binomial: ln(odds)
+    - Poisson: ln(mean)
+    
+- The link function that transforms $\mu_i$ to the natural parameter, $\theta$, is called the *canonical link*.
+
+    - In the normal, $\theta=\mu$, so the canonical link is the identity.
+    - In the binomial and Poisson, the canonical link is the log.
+
+## Wrap Up {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"} 
+
+- Today we have talked about the underlying matrix algebra in regression analysis.
+
+- We also introduced generalized linear model.
+
+    - You can read more about the GzLM [here](https://statmath.wu.ac.at/courses/heather_turner/glmCourse_001.pdf).
+    
+- Moving forward, we will be learning how to construct regression models using the following distributions:
+
+    - Gamma
+    - Binomial
+    - Multinomial
+    - Poisson
+    - Negative binomial
+    
+- Note that this is *just the beginning* of modeling.
+
+- There are more complex models that are beyond the scope of this course! 
+
+    - Start thinking now about what you would like to study in Advanced Statistical Modeling.
+
+
+
+
+
+

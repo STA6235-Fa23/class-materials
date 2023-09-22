@@ -1,0 +1,332 @@
+---
+title: "Gamma Regression"
+subtitle: "STA6235: Modeling in Regression"
+execute:
+  echo: true
+  warning: false
+  message: false
+  error: true
+format: 
+  revealjs:
+    theme: uwf2
+    embed-resources: true
+    slide-number: false
+    width: 1600
+    height: 900
+    df-print: paged
+    html-math-method: katex
+title-slide-attributes:
+    data-background-image: /Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/title.png
+    data-background-size: contain 
+editor: source
+pdf-separate-fragments: true
+fig-align: center
+---
+
+
+## Gamma Regression {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"} 
+
+- Consider the gamma distribution,
+$$
+f(y|\mu, \gamma) = \frac{1}{\Gamma(\gamma) \left( \frac{\mu}{\gamma} \right)^\gamma} y^{\gamma-1} \exp\left\{ \frac{-y \gamma}{\mu} \right\}
+$$
+- where: $y > 0$, $\mu > 0$, $\gamma > 0$, and $\Gamma(\cdot)$ is the [Gamma function](https://en.wikipedia.org/wiki/Gamma_function)
+
+- This is appropriate for continuous, positive data that has a right skew.
+
+    - I have primarily used it for complete time-to-event data
+    
+        - e.g., length of stay
+        
+- The canonical link is the negative inverse...
+    
+    - ...but the common link to use is the log.
+    
+## Gamma Regression - R Syntax {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"}       
+        
+- We will use the `glm()` function to perform Gamma regression,
+
+```{r, echo = TRUE, eval = FALSE}
+m <- glm([outcome] ~ [pred_1] + [pred_2] + ... + [pred_k], 
+         data = [dataset], 
+         family = Gamma(link = "log"))
+```
+
+- Note the new-to-us piece of syntax: `link = "log"` attached to `family`.
+
+## Data from the Jackson Heart Study {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"} 
+
+- Consider data from the [Jackson Heart Study](https://www.jacksonheartstudy.org/). Let us consider the baseline visit (V1). 
+
+::: {.panel-tabset}
+
+## Data
+
+```{r}
+#| echo: false
+library(tidyverse)
+library(haven)
+data <- read_sas("/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/STA6235/Fa23/data/analysis1.sas7bdat") %>%
+  select(subjid, HbA1c, age, BMI3cat) %>%
+  na.omit()
+head(data)
+```
+
+## Code
+
+```{r}
+#| eval: false
+library(tidyverse)
+library(haven)
+data <- read_sas("/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/STA6235/Fa23/data/analysis1.sas7bdat") %>%
+  select(subjid, HbA1c, age, BMI3cat) %>%
+  na.omit()
+```
+
+:::
+
+## Example: HbA1c in the Jackson Heart Study {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"} 
+
+::: {.panel-tabset}
+
+## Histogram
+
+<center>
+```{r}
+#| echo: false
+data %>% ggplot(aes(x = HbA1c)) +
+  geom_histogram(binwidth = 0.5, color="hotpink", fill="pink") +
+  labs(y = "Count",
+       x = "Hemoglobin A1c") +
+  theme_bw()
+```
+</center>
+
+## Code
+
+```{r}
+#| eval: false
+data %>% ggplot(aes(x = HbA1c)) +
+  geom_histogram(binwidth = 0.5, color="hotpink", fill="pink") +
+  labs(y = "Count",
+       x = "Hemoglobin A1c") +
+  theme_bw()
+```
+
+:::
+  
+## Example: HbA1c in the Jackson Heart Study {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"} 
+
+- Let's take a basic example,
+
+::: {.panel-tabset}
+
+## Code
+
+```{r}
+m1 <- glm(HbA1c ~ age + as.factor(BMI3cat), 
+          data = data, 
+          family = Gamma(link = "log"))
+```
+
+## Results
+
+```{r}
+#| echo: false
+summary(m1)
+```
+
+$$\ln(y) = 1.625 + 0.003 \text{ age} - 0.064 \text{ BMI}_1 - 0.110 \text{ BMI}_2$$
+
+:::
+
+## Gamma Regression -- Interpretations {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"} 
+
+- Uh oh. We are now modeling ln(*y*) and not *y* directly...
+
+    - We need to "undo" the ln() so that we can discuss the results in the original units of *y*
+
+- We will transform the coefficients: 
+
+$$
+\begin{align*}
+\ln(y) &= \hat{\beta}_0 + \hat{\beta}_1 x_1 + \hat{\beta}_2 x_2 + ... \hat{\beta}_k x_k \\
+y &= \exp\left\{\hat{\beta}_0 + \hat{\beta}_1 x_1 + \hat{\beta}_2 x_2 + ... \hat{\beta}_kx_k \right\} \\
+y &= e^{\hat{\beta}_0} e^{\hat{\beta}_1x_1} e^{\hat{\beta}_2 x_2} \cdot \cdot \cdot e^{\hat{\beta}_k x_k}
+\end{align*}
+$$
+
+- These are *multiplicative* effects, as compared to the *additive* effects we saw under the normal distribution.
+
+## Gamma Regression -- Interpretations {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"} 
+
+- In the JHS model,
+
+$$\ln(y) = 1.625 + 0.003 \text{ age} - 0.064 \text{ BMI}_1 - 0.110 \text{ BMI}_2$$
+
+::: {.panel-tabset}
+
+## Age
+
+- For a 1 year increase in age, the expected HbA1c is multiplied by $e^{0.003}=1.003$. This is a 0.3% increase.
+
+- For a 10 year increase in age, the expected HbA1c is multiplied by $e^{0.003 \times 10}=1.030$. This is a 3% increase.
+
+## BMI~1~
+- The expected HbA1c for those intermediate health (BMI~1~=1, BMI~2~=0) is $e^{-0.064}=0.938$ times that of those in poor health (BMI~1~=0, BMI~2~=0). This is a ~6% decrease.
+
+## BMI~2~
+- The expected HbA1c for those ideal health (BMI~1~=0, BMI~2~=1) is $e^{-0.110}=0.896$ times that of those in poor health (BMI~1~=0, BMI~2~=0). This is a ~10% decrease.
+
+:::
+
+## Gamma Regression -- Significance of Predictors {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"} 
+
+- What we've learned so far re: significance of predictors holds true with GzLM
+
+    - Significance of individual (continuous or binary) predictors $\to$ *t*-test
+    
+    - Significance of categorical (>2 categories) predictors $\to$ ANOVA with full/reduced models
+    
+        - We need to add `test = "LRT"` to the `anova()` function.
+        
+```{r}
+#| eval: false
+anova(reduced, full, test = "LRT")
+```
+
+## Gamma Regression -- Significance of Predictors {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"} 
+
+- Let's consider a different model with the JHS data,
+
+::: {.panel-tabset}
+
+## Code
+
+```{r}
+m2 <- glm(HbA1c ~ age + as.factor(BMI3cat) + age:as.factor(BMI3cat), 
+          data = data, 
+          family = Gamma(link = "log"))
+```
+
+## Results
+
+```{r}
+#| echo: false
+summary(m2)
+```
+
+:::
+
+## Gamma Regression -- Significance of Predictors {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"} 
+
+- Let's see if the interaction between age and health status is significant,
+
+::: {.panel-tabset}
+
+## Results
+
+```{r}
+#| echo: false
+full <- glm(HbA1c ~ age + as.factor(BMI3cat) + age:as.factor(BMI3cat), data = data, family = Gamma(link = "log"))
+reduced <- glm(HbA1c ~ age + as.factor(BMI3cat), data = data, family = Gamma(link = "log"))
+anova(reduced, full, test = "LRT")
+```
+
+## Code
+
+```{r}
+#| eval: false
+full <- glm(HbA1c ~ age + as.factor(BMI3cat) + age:as.factor(BMI3cat), data = data, family = Gamma(link = "log"))
+reduced <- glm(HbA1c ~ age + as.factor(BMI3cat), data = data, family = Gamma(link = "log"))
+anova(reduced, full, test = "LRT")
+```
+
+:::
+
+- The interaction between age and health status as indicated by BMI is not significant (*p* = 0.677), so it should be removed from the model.
+
+## Gamma Regression -- Significance of Predictors {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"} 
+
+- Removing the interaction term,
+
+::: {.panel-tabset}
+
+## Results
+
+```{r}
+#| echo: false
+m3 <- glm(HbA1c ~ age + as.factor(BMI3cat), 
+          data = data, 
+          family = Gamma(link = "log"))
+summary(m3)
+```
+
+## Code
+
+```{r}
+#| eval: false
+m3 <- glm(HbA1c ~ age + as.factor(BMI3cat), 
+          data = data, 
+          family = Gamma(link = "log"))
+summary(m3)
+```
+
+:::
+
+- Age is a significant predictor of HbA1c (*p* < 0.001). 
+
+- We need a partial *F* to determine if health status as defined by BMI is a significant predictor of HbA1c.
+
+## Gamma Regression -- Significance of Predictors {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"} 
+
+::: {.panel-tabset}
+
+## Results
+
+```{r}
+#| echo: false
+full <- glm(HbA1c ~ age + as.factor(BMI3cat), data = data, family = Gamma(link = "log"))
+reduced <- glm(HbA1c ~ age, data = data, family = Gamma(link = "log"))
+anova(reduced, full, test = "LRT")
+```
+
+## Code
+
+```{r}
+#| eval: false
+full <- glm(HbA1c ~ age + as.factor(BMI3cat), data = data, family = Gamma(link = "log"))
+reduced <- glm(HbA1c ~ age, data = data, family = Gamma(link = "log"))
+anova(reduced, full, test = "LRT")
+```
+
+:::
+
+- Thus, health status as defined by BMI is a significant predictor of HbA1c (*p* < 0.001).
+
+## Visualizations {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"} 
+
+::: {.panel-tabset}
+
+## Prompts
+
+- Let's construct a graph of the resulting model (live!).
+
+- What should be on the *x*-axis?
+
+- What should define the lines?
+
+- What do you think the "line" will look like?
+
+## Code
+
+```{r}
+
+# we will graph in here
+
+```
+
+:::
+    
+    
+
