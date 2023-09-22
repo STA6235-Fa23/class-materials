@@ -18,8 +18,8 @@ The tentative schedule is as follows:
 | 4 | T | 09/12 | [Interaction terms - part 1](https://sta6235-fa23.github.io/class-materials/lectures/L07-interactions-pt1.html) |
 |   | R | 09/14 | [Interaction terms - part 2](https://sta6235-fa23.github.io/class-materials/lectures/L08-interactions-pt2.html) |
 |   |   |       | Assignment: A04, due 09/18 |
-| 5 | T | 09/19 | Theory of generalized linear models |
-|   | R | 09/21 | Gamma regression |
+| 5 | T | 09/19 | [Theory of generalized linear models](https://sta6235-fa23.github.io/class-materials/lectures/L09-theory-of-linear-models.html) |
+|   | R | 09/21 | [Gamma regression](https://sta6235-fa23.github.io/class-materials/lectures/L10-gamma-regression.html) |
 |   |   |       | Assignment: A05, due 09/25 |
 | 6 | T | 09/26 | Project 1 |
 |   | R | 09/28 | Project 1 |
