@@ -24,8 +24,8 @@ The tentative schedule is as follows:
 | 6 | T | 09/26 | Project 1 |
 |   | R | 09/28 | Project 1 |
 |   |   |       | Assignment: P1, due 10/02 |
-| 7 | T | 10/03 | Binary logistic regression |
-|   | R | 10/05 | Binary logistic regression |
+| 7 | T | 10/03 | [Binary logistic regression](https://sta6235-fa23.github.io/class-materials/lectures/L11-binary-logistic-regression.html) |
+|   | R | 10/05 | Work on Assignment A06 |
 |   |   |       | Assignment: A06, due 10/09 |
 | 8 | T | 10/10 | Ordinal and nominal logistic regressions |
 |   | R | 10/12 | Ordinal and nominal logistic regressions |
