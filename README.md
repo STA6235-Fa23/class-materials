@@ -27,26 +27,26 @@ The tentative schedule is as follows:
 | 7 | T | 10/03 | [Binary logistic regression](https://sta6235-fa23.github.io/class-materials/lectures/L11-binary-logistic-regression.html) |
 |   | R | 10/05 | Work on Assignment A06 |
 |   |   |       | Assignment: A06, due 10/09 |
-| 8 | T | 10/10 | Ordinal and nominal logistic regressions |
-|   | R | 10/12 | Ordinal and nominal logistic regressions |
+| 8 | T | 10/10 | [Ordinal logistic regression](https://sta6235-fa23.github.io/class-materials/lectures/L12-ordinal-logistic-regression.html) |
+|   | R | 10/12 | [Nominal logistic regression](https://sta6235-fa23.github.io/class-materials/lectures/L13-nominal-logistic-regression.html) |
 |   |   |       | Assignment: A07, due 10/16 |
 | 9 | T | 10/17 | Project 2 |
-|   | R | 10/19 | Project 2 |
+|   | R | 10/19 | Project 2 - no meeting |
 |   |   |       | Assignment: P2, due 10/23 |
-| 10 | T | 10/24 | Poisson and negative binomial regressions (Dr. Seals traveling) |
-|    | R | 10/26 | Poisson and negative binomial regressions (Dr. Seals traveling) |
+| 10 | T | 10/24 | Poisson and negative binomial regressions (no meeting - Dr. Seals traveling) |
+|    | R | 10/26 | Zero-inflated models (no meeting - Dr. Seals traveling) |
 |    |   |       | Assignment: A08, due 10/30 |
 | 11 | T | 10/31 | Project 3 |
-|    | R | 11/02 | Project 3 |
+|    | R | 11/02 | Project 3  - no meeting |
 |    |   |       | Assignment: P3, due 11/06 |
 | 12 | T | 11/07 | Cross validation |
-|    | R | 11/09 | Assignment 9 (Dr. Seals traveling) |
+|    | R | 11/09 | Assignment 9 (no meeting - Dr. Seals traveling) |
 |    |   |       | Assignment: A09, due 11/13 |
 | 13 | T | 11/14 | Choosing the correct modeling strategy |
 |    | R | 11/16 | Assignment 10 |
 |    |   |       | Assignment: A10, due 11/20 |
-| 14 | T | 11/21 | Thanksgiving: Ugly Graph Contest |
-|    | R | 11/23 | Thanksgiving (no class) |
+| 14 | T | 11/21 | Thanksgiving: Ugly Graph Contest (no meeting) |
+|    | R | 11/23 | Thanksgiving (no meeting - campus closed) |
 |    |   |       | Assignment: Ugly Graph Entry, due 11/27 |
 | 15 | T | 11/28 | Take home applied exam |
 |    | R | 11/30 | Take home applied exam |
